@@ -1,7 +1,7 @@
-import homepage from "./homepage";
-import landing from "./landing";
+import HomeLayout from "./homeLayout";
+import Landing from "./landing";
 
 export default {
-    homepage,
-    landing,
+    HomeLayout,
+    Landing,
 };
