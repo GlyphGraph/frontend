@@ -1,7 +1,7 @@
-import { Error } from "./pages";
+import { Header } from "./components/header";
 
 const App = () => {
-    return <Error />;
+    return <Header />;
 };
 
 export default App;
