@@ -1,0 +1,13 @@
+.error-page {
+    background-image: url("/src/assets/Frame\ 1404.jpg"); // Replace with the actual path to your image
+    background-size: cover;
+    background-position: center;
+    height: 100vh; /* Adjust height as needed */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white; /* Assuming you want white text over the image */
+    font-size: 1.5rem;
+    text-align: center;
+}

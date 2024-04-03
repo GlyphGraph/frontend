@@ -1,7 +1,3 @@
-import HomeLayout from "./homeLayout";
-import Landing from "./landing";
-
-export default {
-    HomeLayout,
-    Landing,
-};
+export { default as HomeLayout } from "./HomeLayout";
+export { default as Landing } from "./Landing";
+export { default as Error } from "./error";
