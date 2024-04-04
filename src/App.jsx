@@ -1,7 +1,6 @@
-import { Header } from "./components/header";
-
+import Landing from "./pages/landing";
 const App = () => {
-    return <Header />;
+    return <Landing />;
 };
 
 export default App;
