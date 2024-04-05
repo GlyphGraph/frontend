@@ -1,4 +1,5 @@
 import { Input } from "@nextui-org/react";
+import Sidebar from "@components/sidebar";
 import {
     Dropdown,
     DropdownTrigger,
@@ -10,6 +11,7 @@ import {
 const HeaderMain = () => {
     return (
         <div className="h-[15%] flex gap-3 justify-center items-center p-4 border-b border-gray-700">
+            <Sidebar />
             <Input
                 placeholder="Search in all vaults..."
                 className="max-w-50 bg-transparent border border-gray-700  focus:border-gray-200 rounded-xl "
