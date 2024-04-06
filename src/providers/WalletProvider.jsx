@@ -2,11 +2,13 @@ import { AuthContext } from "@context/auth";
 import gg from "@contracts/GlyphGraph.json";
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 export default function WalletProvider({ children }) {
     const [auth, setAuth] = useState()
     const [, setAccountAddr] = useState("");
     const [, setProvider] = useState(null);
+    const location = useLocation()
 
     useEffect(() => {
         const getProvider = async () => {
@@ -51,7 +53,7 @@ export default function WalletProvider({ children }) {
     }
 
     useEffect(() => {
-        if(!auth) {
+        if(!auth && location.pathname !== "/") {
             connectToWallet()
         }
     }, [])
