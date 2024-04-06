@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 export default function WalletProvider({ children }) {
     const [auth, setAuth] = useState()
     const [, setAccountAddr] = useState("");
-    const [contract,] = useState(null)
     const [, setProvider] = useState(null);
 
     useEffect(() => {
@@ -18,16 +17,15 @@ export default function WalletProvider({ children }) {
                     params: [{ chainId: '0x33' }],
                 })
             }
-            const _provider = new ethers.providers.Web3Provider(window.ethereum);
+            const _provider = new ethers.BrowserProvider(window.ethereum);
             setProvider(_provider);
             if (_provider) {
-                const signer = _provider.getSigner();
+                const signer = await _provider.getSigner();
                 console.log(signer);
                 const accounts = await window.ethereum.request({
                     method: 'eth_requestAccounts'
                 })
                 setAccountAddr(accounts[0]);
-                console.log(contract);
                 setAuth({
                     accountAddr: accounts[0],
                     contract: new ethers.Contract(import.meta.env.VITE_CONTRACT_ADDRESS, gg.abi, signer),
@@ -51,6 +49,12 @@ export default function WalletProvider({ children }) {
         })
         setAccountAddr(accounts[0]);
     }
+
+    useEffect(() => {
+        if(!auth) {
+            connectToWallet()
+        }
+    }, [])
 
     return (
         <AuthContext.Provider value={{ auth, setAuth, connectToWallet }}>

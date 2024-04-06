@@ -1,8 +1,13 @@
 import longLogo from "@assets/GlyphyGraphLongLogo.svg";
+import { useAuth } from "@context/auth";
 import AddIcon from '@mui/icons-material/Add';
 import { Button, Image } from "@nextui-org/react";
+import useSWR from "swr";
 
 const MainPage = () => {
+    const { auth } = useAuth()
+    const { data } = useSWR("getUserVaults", async () => await auth?.contract?.getUserVaults())
+    console.log(data)
     return (
         <div className="flex flex-row">
             <div className="bg-slate-950 w-[15%] h-dvh flex flex-col gap-8">

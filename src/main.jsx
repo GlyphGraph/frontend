@@ -11,9 +11,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <BrowserRouter>
             <WalletProvider>
                 <NextUIProvider>
-                    <main>
-                        <App />
-                    </main>
+                    <App />
                 </NextUIProvider>
             </WalletProvider>
         </BrowserRouter>
