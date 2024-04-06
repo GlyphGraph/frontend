@@ -1,18 +1,21 @@
 import Sidebar from "@components/sidebar";
 import HeaderMain from "@components/headerMain";
-
+import TextArea from "@components/textarea";
+import VaultsBlock from "@components/vaults_block";
+import AccountDertails from "@components/Account_details";
 const Landing = () => {
     return (
         <div>
-            <div className="flex flex-row">
-
             <HeaderMain />
-            <div className="flex">
-                <div className="max-w-[50%] border-r border-white"></div>
-                <div className="max-w-[50%]"></div>
+            <div className="flex flex-row h-[100vh]">
+                <div className=" w-[50%] border-r border-white">
+                    <VaultsBlock />
+                </div>
+                <div className=" flex-1 w-[50%]">
+                    <AccountDertails />
+                </div>
             </div>
         </div>
-            </div>
     );
 };
 
