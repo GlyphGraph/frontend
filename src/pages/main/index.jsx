@@ -3,7 +3,7 @@ import HeaderMain from "@components/headerMain";
 import TextArea from "@components/textarea";
 import VaultsBlock from "@components/vaults_block";
 import AccountDertails from "@components/Account_details";
-const Landing = () => {
+const MainPage = () => {
     return (
         <div>
             <HeaderMain />
@@ -19,4 +19,4 @@ const Landing = () => {
     );
 };
 
-export default Landing;
+export default MainPage;
