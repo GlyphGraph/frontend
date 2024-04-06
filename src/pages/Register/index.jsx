@@ -1,13 +1,17 @@
 import logo from "@assets/logo.png";
+import metamaskIcon from "@assets/metamask.webp";
+import { useAuth } from "@context/auth";
+import { Avatar, Button, Chip, Input } from "@nextui-org/react";
 import { useGoogleLogin } from '@react-oauth/google';
+import { getRandomWords } from "@utils/faker";
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import styles from "./styles.module.scss";
-import { useAuth } from "@context/auth";
-import { Chip, Avatar } from "@nextui-org/react";
-import metamaskIcon from "@assets/metamask.webp";
-import { Input } from "@nextui-org/react";
+import EastIcon from '@mui/icons-material/East';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { Link } from "react-router-dom";
+import logo2 from "@assets/GlyphyGraphLongLogo.svg"
 
 const Stages = Object.freeze({
     Accounts: "accounts",
@@ -49,12 +53,14 @@ export default function Signup() {
         }
     }, [])
 
+    const [matrix, setMatrix] = useState()
     const handleRegister = async () => {
-        if(stage === Stages.Accounts) {
+        if (stage === Stages.Accounts) {
             setStage(Stages.Password)
+            setMatrix(getRandomWords())
             return
         }
-        if(stage === Stages.Password) {
+        if (stage === Stages.Password) {
             return
         }
     }
@@ -62,109 +68,72 @@ export default function Signup() {
 
     return (
         <div className="">
+            <div className="flex flex-row h-20  items-center justify-between text-[#64748b]  text-lg px-5 pt-5">
+                <Link to="/">
+                    <img src={logo2} className="h-12" />
+                </Link>
+                <div className="flex justify-center">
+                    {auth && (
+                        <Chip
+                            color="warning"
+                            variant="bordered"
+                            avatar={
+                                <Avatar src={metamaskIcon} />
+                            }
+                            size="lg"
+                            className="cursor-pointer"
+                        >
+                            {auth?.accountAddr.substr(0, 4) + "..." + auth?.accountAddr.substr(-4)}
+                        </Chip>
+                    )}
+                </div>
+            </div>
             <div className="h-screen flex items-center justify-center">
-                <div className="border-2 rounded-2xl ">
-                    <div className="flex  min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+                <div className="border-2 rounded-2xl">
+                    <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                             <img
                                 className="mx-auto  w-20 h-20"
                                 src={logo}
                                 alt="Your Company"
                             />
-                            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
+                            <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-white">
                                 Sign up
                             </h2>
                         </div>
 
                         {stage === Stages.Accounts && (
                             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                                <div className="flex justify-center">
-                                    {auth && (
-                                        <Chip
-                                            color="warning"
-                                            variant="bordered"
-                                            avatar={
-                                                <Avatar src={metamaskIcon} />
-                                            }
-                                            size="lg"
-                                            // onClick={async () => {
-                                            //     setAuth(null);
-                                            //     await getProvider();
-                                            //     await connectToWallet()
-                                            // }}
-                                            className="cursor-pointer"
-                                        >
-                                            {auth?.accountAddr.substr(0, 4) + "..." + auth?.accountAddr.substr(-4)}
-                                        </Chip>
-                                    )}
-                                </div>
-                                <form className="space-y-6" action="#" method="POST">
-                                    <div>
-                                        {/* <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">
-                                            Email address
-                                        </label> */}
-
-                                        <div className="mt-2">
-                                            {/* <input
-                                                id="email"
-                                                name="email"
-                                                type="email"
-                                                autoComplete="email"
-                                                required
-                                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            /> */}
-                                        <Input
-                                            id="email"
-                                            name="email"
-                                            size="sm"
-                                            type="email"
-                                            label="Email"
-                                            placeholder="Enter your email"
-                                            required
-                                            autoComplete="email"
-                                        />
-                                        </div>
-                                    </div>
+                                <form className="flex flex-col gap-5 pt-4" >
+                                    <Input
+                                        id="email"
+                                        name="email"
+                                        size="md"
+                                        type="email"
+                                        label="Email"
+                                        placeholder="Enter your email"
+                                        required
+                                        autoComplete="email"
+                                        className=""
+                                    />
+                                    <Input
+                                        id="password"
+                                        name="password"
+                                        size="sm"
+                                        type="password"
+                                        label="Password"
+                                        placeholder="Enter your password"
+                                        required
+                                        autoComplete="current-password"
+                                    />
 
                                     <div>
-                                        {/* <div className="flex items-center justify-between">
-                                            <label
-                                            htmlFor="password"
-                                            className="block text-sm font-medium leading-6 text-white"
-                                        >
-                                                Password
-                                            </label>
-                                        </div> */}
-                                        <div className="mt-2">
-                                            {/* <input
-                                                id="password"
-                                                name="password"
-                                                type="password"
-                                                autoComplete="current-password"
-                                                required
-                                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            /> */}
-                                        <Input
-                                            id="password"
-                                            name="password"
-                                            size="sm"
-                                            type="password"
-                                            label="Password"
-                                            placeholder="Enter your password"
-                                            required
-                                            autoComplete="current-password"
-                                        />
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <button
-                                            type="submit"
+                                        <Button
                                             className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                             onClick={handleRegister}
                                         >
                                             Sign up
-                                        </button>
+                                        </Button>
                                     </div>
                                 </form>
 
@@ -179,50 +148,40 @@ export default function Signup() {
                                 <p className="mt-10 text-center text-sm text-gray-500">
                                     Already a member?{" "}
                                     <a
-                                    href="/login"
-                                    className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-                                >
+                                        href="/login"
+                                        className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                                    >
                                         Sign in
                                     </a>
                                 </p>
                             </div>
                         )}
                         {stage === Stages.Password && (
-                            <div className="grid grid-rows-5 grid-cols-5">
-                                <div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
+                            <div className="flex flex-col gap-2 pt-4">
+                                <p className="font-semibold font-sans">The following the master password for the account you should store this some where secure: </p>
+                                <div className="flex flex-col gap-3 pt-4">
+                                    {matrix?.map((e, i) => (
+                                        <div key={i} className="flex gap-3">
+                                            {e?.map((f, k) => <Input key={k} value={f} disabled />)}
+                                        </div>
+                                    ))}
                                 </div>
-                                <div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                </div>
-                                <div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
-                                    <div></div>
+                                <div className="flex flex-row gap-2 pt-4">
+                                    <Button
+                                        className="w-[95%]"
+                                        color="primary"
+                                        endIcon={
+                                            <ContentCopyIcon fontSize="small" />
+                                        }
+                                    >
+                                        Copy to Clipboard
+                                    </Button>
+                                    <Button
+                                        className="w-[5%]"
+                                        isIconOnly
+                                    >
+                                        <EastIcon fontSize="small" color="white" />
+                                    </Button>
                                 </div>
                             </div>
                         )}
