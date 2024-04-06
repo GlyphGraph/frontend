@@ -10,31 +10,34 @@ export default function WalletProvider({ children }) {
     const [, setProvider] = useState(null);
     const location = useLocation()
 
-    useEffect(() => {
-        const getProvider = async () => {
-            const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-            if (chainId !== '0x33') {
-                await window.ethereum.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: '0x33' }],
-                })
-            }
-            const _provider = new ethers.BrowserProvider(window.ethereum);
-            setProvider(_provider);
-            if (_provider) {
-                const signer = await _provider.getSigner();
-                console.log(signer);
-                const accounts = await window.ethereum.request({
-                    method: 'eth_requestAccounts'
-                })
-                setAccountAddr(accounts[0]);
-                setAuth({
-                    accountAddr: accounts[0],
-                    contract: new ethers.Contract(import.meta.env.VITE_CONTRACT_ADDRESS, gg.abi, signer),
-                    provider: _provider
-                })
-            }
+    const getProvider = async () => {
+        const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+        if (chainId !== '0x33') {
+            await window.ethereum.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{ chainId: '0x33' }],
+            })
         }
+        const _provider = new ethers.BrowserProvider(window.ethereum, "any");
+        setProvider(_provider);
+        if (_provider) {
+            const res = await _provider.send("eth_requestAccounts", [])
+            console.log(res)
+            const signer = await _provider.getSigner();
+            console.log(signer);
+            const accounts = await window.ethereum.request({
+                method: 'eth_requestAccounts'
+            })
+            setAccountAddr(accounts[0]);
+            setAuth({
+                accountAddr: accounts[0],
+                contract: new ethers.Contract(import.meta.env.VITE_CONTRACT_ADDRESS, gg.abi, signer),
+                provider: _provider
+            })
+        }
+    }
+
+    useEffect(() => {
         getProvider();
     }, [])
 
@@ -53,13 +56,13 @@ export default function WalletProvider({ children }) {
     }
 
     useEffect(() => {
-        if(!auth && location.pathname !== "/") {
+        if (!auth && location.pathname !== "/") {
             connectToWallet()
         }
     }, [])
 
     return (
-        <AuthContext.Provider value={{ auth, setAuth, connectToWallet }}>
+        <AuthContext.Provider value={{ auth, setAuth, connectToWallet, getProvider }}>
             {children}
         </AuthContext.Provider>
     )

@@ -1,21 +1,26 @@
-import logo2 from "./../../assets/GlyphyGraphLongLogo.png";
-import logo from "./../../assets/logo.png";
+import logo from "@assets/logo.png";
+import metamaskIcon from "@assets/metamask.webp";
+import { useAuth } from "@context/auth";
+import { Avatar, Button, Chip, Input } from "@nextui-org/react";
 import { useGoogleLogin } from "@react-oauth/google";
+import { getRandomWords } from "@utils/faker";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
-import { useAuth } from "@context/auth";
-import { Chip, Avatar } from "@nextui-org/react";
-import metamaskIcon from "@assets/metamask.webp";
-import { Input } from "@nextui-org/react";
-import { Button } from "@nextui-org/react";
-import { LineAxis } from "@mui/icons-material";
+import EastIcon from "@mui/icons-material/East";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { Link } from "react-router-dom";
-import Header from "@components/header";
+import logo2 from "@assets/GlyphyGraphLongLogo.svg";
+
+const Stages = Object.freeze({
+    Accounts: "accounts",
+    Password: "password",
+});
 
 export default function Signup() {
-    const { auth, connectToWallet, setAuth } = useAuth();
+    const [stage, setStage] = useState(Stages.Accounts);
+    const { auth, connectToWallet, setAuth, getProvider } = useAuth();
     const [, setUser] = useState();
     const [token, setToken] = useState();
     const [details, setDetails] = useState();
@@ -49,167 +54,147 @@ export default function Signup() {
         }
     }, []);
 
+    const [matrix, setMatrix] = useState();
+    const handleRegister = async () => {
+        if (stage === Stages.Accounts) {
+            setStage(Stages.Password);
+            setMatrix(getRandomWords());
+            return;
+        }
+        if (stage === Stages.Password) {
+            return;
+        }
+    };
+
     return (
         <div className="">
-            <div className="flex flex-row h-20  items-center justify-between text-[#64748b]  text-lg pl-3 pr-3 pt-5">
+            <div className="flex flex-row h-20  items-center justify-between text-[#64748b]  text-lg px-5 pt-5">
                 <Link to="/">
                     <img src={logo2} className="h-12" />
                 </Link>
-                <ul className="flex ">
-                    <li className="hover:text-white duration-300 ">
-                        {/* <a>Login</a>
-                         */}
-                        <div className="flex justify-center">
-                            {auth && (
-                                <Chip
-                                    color="warning"
-                                    variant="bordered"
-                                    avatar={<Avatar src={metamaskIcon} />}
-                                    size="lg"
-                                    // onClick={() => {
-                                    //     setAuth(null);
-                                    //     connectToWallet();
-                                    // }}
-                                    className="cursor-pointer"
-                                >
-                                    {auth?.accountAddr.substr(0, 4) +
-                                        "..." +
-                                        auth?.accountAddr.substr(-4)}
-                                </Chip>
-                            )}
-                        </div>
-                    </li>
-                </ul>
+                <div className="flex justify-center">
+                    {auth && (
+                        <Chip
+                            color="warning"
+                            variant="bordered"
+                            avatar={<Avatar src={metamaskIcon} />}
+                            size="lg"
+                            className="cursor-pointer"
+                        >
+                            {auth?.accountAddr.substr(0, 4) +
+                                "..." +
+                                auth?.accountAddr.substr(-4)}
+                        </Chip>
+                    )}
+                </div>
             </div>
             <div className="h-screen flex items-center justify-center">
-                <div className="border-2 rounded-2xl ">
+                <div className="border-2 rounded-2xl">
                     <div className="flex  min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                            <Link to="/">
-                                <img
-                                    className="mx-auto  w-20 h-20"
-                                    src={logo}
-                                    alt="Your Company"
-                                />
-                            </Link>
-                            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
+                            <img
+                                className="mx-auto  w-20 h-20"
+                                src={logo}
+                                alt="Your Company"
+                            />
+                            <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-white">
                                 Sign up
                             </h2>
                         </div>
 
-                        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                            <form
-                                className="space-y-6"
-                                action="#"
-                                method="POST"
-                            >
-                                <div>
-                                    {/* <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">
-                                        Email address
-                                    </label> */}
+                        {stage === Stages.Accounts && (
+                            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                                <form className="flex flex-col gap-5 pt-4">
+                                    <Input
+                                        id="email"
+                                        name="email"
+                                        size="md"
+                                        type="email"
+                                        label="Email"
+                                        placeholder="Enter your email"
+                                        required
+                                        autoComplete="email"
+                                        className=""
+                                    />
+                                    <Input
+                                        id="password"
+                                        name="password"
+                                        size="sm"
+                                        type="password"
+                                        label="Password"
+                                        placeholder="Enter your password"
+                                        required
+                                        autoComplete="current-password"
+                                    />
 
-                                    <div className="mt-2">
-                                        {/* <input
-                                            id="email"
-                                            name="email"
-                                            type="email"
-                                            autoComplete="email"
-                                            required
-                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        /> */}
-                                        <Input
-                                            id="email"
-                                            name="email"
-                                            size="sm"
-                                            type="email"
-                                            label="Email"
-                                            placeholder="Enter your email"
-                                            required
-                                            autoComplete="email"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div>
-                                    {/* <div className="flex items-center justify-between">
-                                        <label
-                                            htmlFor="password"
-                                            className="block text-sm font-medium leading-6 text-white"
+                                    <div>
+                                        <Button
+                                            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                            onClick={handleRegister}
                                         >
-                                            Password
-                                        </label>
-                                    </div> */}
-                                    <div className="mt-2">
-                                        {/* <input
-                                            id="password"
-                                            name="password"
-                                            type="password"
-                                            autoComplete="current-password"
-                                            required
-                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        /> */}
-                                        <Input
-                                            id="password"
-                                            name="password"
-                                            size="sm"
-                                            type="password"
-                                            label="Password"
-                                            placeholder="Enter your password"
-                                            required
-                                            autoComplete="current-password"
-                                        />
+                                            Sign up
+                                        </Button>
                                     </div>
-                                </div>
-                                {/* <div className="flex justify-center">
-                                    {auth && (
-                                        <Chip
-                                            color="warning"
-                                            variant="bordered"
-                                            avatar={
-                                                <Avatar src={metamaskIcon} />
-                                            }
-                                            size="lg"
-                                            onClick={() => {
-                                                setAuth(null);
-                                                connectToWallet();
-                                            }}
-                                            className="cursor-pointer"
-                                        >
-                                            {auth?.accountAddr.substr(0, 4) +
-                                                "..." +
-                                                auth?.accountAddr.substr(-4)}
-                                        </Chip>
-                                    )}
-                                </div> */}
+                                </form>
 
-                                <div>
+                                <div className=" flex items-center justify-center">
                                     <button
-                                        type="submit"
-                                        className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                        className={`flex mt-3 justify-center ${styles["login-with-google-btn"]}`}
+                                        onClick={() => login()}
                                     >
-                                        Sign up
+                                        Sign in with Google
                                     </button>
                                 </div>
-                            </form>
-
-                            <div className=" flex items-center justify-center">
-                                <Button
-                                    className={`flex mt-3 justify-center ${styles["login-with-google-btn"]}`}
-                                    onClick={() => login()}
-                                >
-                                    Sign in with Google
-                                </Button>
+                                <p className="mt-10 text-center text-sm text-gray-500">
+                                    Already a member?{" "}
+                                    <a
+                                        href="/login"
+                                        className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                                    >
+                                        Sign in
+                                    </a>
+                                </p>
                             </div>
-                            <p className="mt-10 text-center text-sm text-gray-500">
-                                Already a member?{" "}
-                                <a
-                                    href="/login"
-                                    className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-                                >
-                                    Sign in
-                                </a>
-                            </p>
-                        </div>
+                        )}
+                        {stage === Stages.Password && (
+                            <div className="flex flex-col gap-2 pt-4">
+                                <p className="font-semibold font-sans">
+                                    The following the master password for the
+                                    account you should store this some where
+                                    secure:{" "}
+                                </p>
+                                <div className="flex flex-col gap-3 pt-4">
+                                    {matrix?.map((e, i) => (
+                                        <div key={i} className="flex gap-3">
+                                            {e?.map((f, k) => (
+                                                <Input
+                                                    key={k}
+                                                    value={f}
+                                                    disabled
+                                                />
+                                            ))}
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="flex flex-row gap-2 pt-4">
+                                    <Button
+                                        className="w-[95%]"
+                                        color="primary"
+                                        endIcon={
+                                            <ContentCopyIcon fontSize="small" />
+                                        }
+                                    >
+                                        Copy to Clipboard
+                                    </Button>
+                                    <Button className="w-[5%]" isIconOnly>
+                                        <EastIcon
+                                            fontSize="small"
+                                            color="white"
+                                        />
+                                    </Button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
