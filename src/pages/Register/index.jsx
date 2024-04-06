@@ -1,85 +1,108 @@
-import logo from "@assets/logo.png";
-import { useGoogleLogin } from '@react-oauth/google';
-import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
-import { useEffect, useState } from 'react';
+import logo2 from "./../../assets/GlyphyGraphLongLogo.png";
+import logo from "./../../assets/logo.png";
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import { useAuth } from "@context/auth";
 import { Chip, Avatar } from "@nextui-org/react";
 import metamaskIcon from "@assets/metamask.webp";
+import { Input } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
+import { LineAxis } from "@mui/icons-material";
+import { Link } from "react-router-dom";
+import Header from "@components/header";
 
 export default function Signup() {
-    const { auth, connectToWallet, setAuth } = useAuth()
-    const [, setUser] = useState()
-    const [token, setToken] = useState()
-    const [details, setDetails] = useState()
+    const { auth, connectToWallet, setAuth } = useAuth();
+    const [, setUser] = useState();
+    const [token, setToken] = useState();
+    const [details, setDetails] = useState();
     const login = useGoogleLogin({
         onSuccess: async (code) => {
-            setUser(code)
-            await axios.post("https://oauth2.googleapis.com/token", {
-                code: code.code,
-                client_id: import.meta.env.VITE_GOOGLE_KEY,
-                client_secret: import.meta.env.VITE_GOOGLE_SECRET,
-                redirect_uri: 'http://localhost:5173', // Ensure this matches your OAuth configuration
-                grant_type: 'authorization_code'
-            })
-                .then(res => res.data)
+            setUser(code);
+            await axios
+                .post("https://oauth2.googleapis.com/token", {
+                    code: code.code,
+                    client_id: import.meta.env.VITE_GOOGLE_KEY,
+                    client_secret: import.meta.env.VITE_GOOGLE_SECRET,
+                    redirect_uri: "http://localhost:5173", // Ensure this matches your OAuth configuration
+                    grant_type: "authorization_code",
+                })
+                .then((res) => res.data)
                 .then(setToken)
-                .catch(console.log)
+                .catch(console.log);
         },
-        flow: 'auth-code',
+        flow: "auth-code",
     });
 
     useEffect(() => {
         if (token) {
-            setDetails(jwtDecode(token.id_token))
+            setDetails(jwtDecode(token.id_token));
         }
-    }, [token])
+    }, [token]);
 
     useEffect(() => {
         if (!auth) {
-            connectToWallet()
+            connectToWallet();
         }
-    }, [])
-
+    }, []);
 
     return (
         <div className="">
+            <div className="flex flex-row h-20  items-center justify-between text-[#64748b]  text-lg pl-3 pr-3 pt-5">
+                <Link to="/">
+                    <img src={logo2} className="h-12" />
+                </Link>
+                <ul className="flex ">
+                    <li className="hover:text-white duration-300 ">
+                        {/* <a>Login</a>
+                         */}
+                        <div className="flex justify-center">
+                            {auth && (
+                                <Chip
+                                    color="warning"
+                                    variant="bordered"
+                                    avatar={<Avatar src={metamaskIcon} />}
+                                    size="lg"
+                                    // onClick={() => {
+                                    //     setAuth(null);
+                                    //     connectToWallet();
+                                    // }}
+                                    className="cursor-pointer"
+                                >
+                                    {auth?.accountAddr.substr(0, 4) +
+                                        "..." +
+                                        auth?.accountAddr.substr(-4)}
+                                </Chip>
+                            )}
+                        </div>
+                    </li>
+                </ul>
+            </div>
             <div className="h-screen flex items-center justify-center">
                 <div className="border-2 rounded-2xl ">
                     <div className="flex  min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                            <img
-                                className="mx-auto  w-20 h-20"
-                                src={logo}
-                                alt="Your Company"
-                            />
+                            <Link to="/">
+                                <img
+                                    className="mx-auto  w-20 h-20"
+                                    src={logo}
+                                    alt="Your Company"
+                                />
+                            </Link>
                             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
                                 Sign up
                             </h2>
                         </div>
 
                         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                            <div className="flex justify-center">
-                                {auth && (
-                                    <Chip
-                                        color="warning"
-                                        variant="bordered"
-                                        avatar={
-                                            <Avatar src={metamaskIcon} />
-                                        }
-                                        size="lg"
-                                        onClick={() => {
-                                            setAuth(null);
-                                            connectToWallet()
-                                        }}
-                                        className="cursor-pointer"
-                                    >
-                                        {auth?.accountAddr.substr(0, 4) + "..." + auth?.accountAddr.substr(-4)}
-                                    </Chip>
-                                )}
-                            </div>
-                            <form className="space-y-6" action="#" method="POST">
+                            <form
+                                className="space-y-6"
+                                action="#"
+                                method="POST"
+                            >
                                 <div>
                                     {/* <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">
                                         Email address
@@ -137,6 +160,27 @@ export default function Signup() {
                                         />
                                     </div>
                                 </div>
+                                {/* <div className="flex justify-center">
+                                    {auth && (
+                                        <Chip
+                                            color="warning"
+                                            variant="bordered"
+                                            avatar={
+                                                <Avatar src={metamaskIcon} />
+                                            }
+                                            size="lg"
+                                            onClick={() => {
+                                                setAuth(null);
+                                                connectToWallet();
+                                            }}
+                                            className="cursor-pointer"
+                                        >
+                                            {auth?.accountAddr.substr(0, 4) +
+                                                "..." +
+                                                auth?.accountAddr.substr(-4)}
+                                        </Chip>
+                                    )}
+                                </div> */}
 
                                 <div>
                                     <button
@@ -149,12 +193,12 @@ export default function Signup() {
                             </form>
 
                             <div className=" flex items-center justify-center">
-                                <button
+                                <Button
                                     className={`flex mt-3 justify-center ${styles["login-with-google-btn"]}`}
                                     onClick={() => login()}
                                 >
                                     Sign in with Google
-                                </button>
+                                </Button>
                             </div>
                             <p className="mt-10 text-center text-sm text-gray-500">
                                 Already a member?{" "}
