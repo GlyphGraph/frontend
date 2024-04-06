@@ -15,43 +15,44 @@ import logo2 from "@assets/GlyphyGraphLongLogo.svg"
 
 const Stages = Object.freeze({
     Accounts: "accounts",
-    Password: "password"
-})
+    Password: "password",
+});
 
 export default function Signup() {
-    const [stage, setStage] = useState(Stages.Accounts)
-    const { auth, connectToWallet, setAuth, getProvider } = useAuth()
-    const [, setUser] = useState()
-    const [token, setToken] = useState()
-    const [details, setDetails] = useState()
+    const [stage, setStage] = useState(Stages.Accounts);
+    const { auth, connectToWallet, setAuth, getProvider } = useAuth();
+    const [, setUser] = useState();
+    const [token, setToken] = useState();
+    const [details, setDetails] = useState();
     const login = useGoogleLogin({
         onSuccess: async (code) => {
-            setUser(code)
-            await axios.post("https://oauth2.googleapis.com/token", {
-                code: code.code,
-                client_id: import.meta.env.VITE_GOOGLE_KEY,
-                client_secret: import.meta.env.VITE_GOOGLE_SECRET,
-                redirect_uri: 'http://localhost:5173', // Ensure this matches your OAuth configuration
-                grant_type: 'authorization_code'
-            })
-                .then(res => res.data)
+            setUser(code);
+            await axios
+                .post("https://oauth2.googleapis.com/token", {
+                    code: code.code,
+                    client_id: import.meta.env.VITE_GOOGLE_KEY,
+                    client_secret: import.meta.env.VITE_GOOGLE_SECRET,
+                    redirect_uri: "http://localhost:5173", // Ensure this matches your OAuth configuration
+                    grant_type: "authorization_code",
+                })
+                .then((res) => res.data)
                 .then(setToken)
-                .catch(console.log)
+                .catch(console.log);
         },
-        flow: 'auth-code',
+        flow: "auth-code",
     });
 
     useEffect(() => {
         if (token) {
-            setDetails(jwtDecode(token.id_token))
+            setDetails(jwtDecode(token.id_token));
         }
-    }, [token])
+    }, [token]);
 
     useEffect(() => {
         if (!auth) {
-            connectToWallet()
+            connectToWallet();
         }
-    }, [])
+    }, []);
 
     const [matrix, setMatrix] = useState()
     const handleRegister = async () => {
@@ -63,8 +64,7 @@ export default function Signup() {
         if (stage === Stages.Password) {
             return
         }
-    }
-
+    };
 
     return (
         <div className="">
@@ -98,6 +98,7 @@ export default function Signup() {
                                 alt="Your Company"
                             />
                             <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-white">
+                            <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-white">
                                 Sign up
                             </h2>
                         </div>
@@ -129,10 +130,12 @@ export default function Signup() {
 
                                     <div>
                                         <Button
+                                        <Button
                                             className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                             onClick={handleRegister}
                                         >
                                             Sign up
+                                        </Button>
                                         </Button>
                                     </div>
                                 </form>
@@ -148,6 +151,9 @@ export default function Signup() {
                                 <p className="mt-10 text-center text-sm text-gray-500">
                                     Already a member?{" "}
                                     <a
+                                        href="/login"
+                                        className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                                    >
                                         href="/login"
                                         className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                                     >

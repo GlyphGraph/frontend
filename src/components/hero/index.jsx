@@ -4,6 +4,7 @@ import Globe from "./../../assets/Globe.png";
 import bg from "./../../assets/magicpattern-grid-pattern-1712170206583.png";
 import style from "./style.module.scss";
 import { Link } from "react-router-dom";
+import logo from "./../../assets/GlyphyGraphLongLogo.png";
 
 import Card from "@components/Carousel";
 import React, { useEffect, useRef } from "react";
