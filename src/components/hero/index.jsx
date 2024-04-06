@@ -3,7 +3,7 @@ import { Button } from "@nextui-org/react";
 import Globe from "./../../assets/Globe.png";
 import bg from "./../../assets/magicpattern-grid-pattern-1712170206583.png";
 import style from "./style.module.scss";
-
+import { Link } from "react-router-dom";
 
 import Card from "@components/Carousel";
 import React, { useEffect, useRef } from "react";
@@ -38,7 +38,7 @@ const Hero = () => {
                         radius="full"
                         className="rounded-3xl bg-white text-black p-5 text-lg font-semibold hover:bg-[#ca8a04] hover:text-white transition-all"
                     >
-                        Join Now
+                        <Link to="/register">Join Now</Link>
                     </Button>
                 </div>
             </div>
