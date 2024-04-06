@@ -7,6 +7,7 @@ import styles from "./styles.module.scss";
 import { useAuth } from "@context/auth";
 import { Chip, Avatar } from "@nextui-org/react";
 import metamaskIcon from "@assets/metamask.webp";
+import { Input } from "@nextui-org/react";
 
 const Stages = Object.freeze({
     Accounts: "accounts",
