@@ -1,6 +1,7 @@
+import BannerPage from "@pages/bannerpage";
 import Landing from "./pages/landing";
 const App = () => {
-    return <Landing />;
+    return <BannerPage />;
 };
 
 export default App;

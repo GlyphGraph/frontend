@@ -1,0 +1,35 @@
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.rotate-animation {
+    animation: rotate infinite linear 10s; /* Adjust animation duration as needed */
+}
+
+/* Target the second div with the appropriate selector */
+fade {
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s ease-in-out; /* Smooth fade-in */
+}
+
+/* Apply class for loading state when intersection occurs */
+fade.loading {
+    opacity: 1; /* Reveal the div */
+}
+
+@media (min-width: 768px) {
+  .pl-10[pr-10] > div.loading {
+    grid-template-columns: repeat(2, 1fr); /* Two columns on larger screens */
+  }
+}
+
+@media (min-width: 1024px) {
+  .pl-10[pr-10] > div.loading {
+    grid-template-columns: repeat(3, 1fr); /* Three columns on even larger screens */
+  }
+}
