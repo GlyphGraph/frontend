@@ -1,18 +1,22 @@
-import AccountDetails from "@components/Account_details";
-import HeaderMain from "@components/headerMain";
-import VaultsBlock from "@components/vaults_block";
-
+import longLogo from "@assets/GlyphyGraphLongLogo.svg";
+import AddIcon from '@mui/icons-material/Add';
+import { Button, Image } from "@nextui-org/react";
 
 const MainPage = () => {
     return (
-        <div>
-            <HeaderMain />
-            <div className="flex flex-row h-[100vh]">
-                <div className=" w-[50%] border-r border-white">
-                    <VaultsBlock />
+        <div className="flex flex-row">
+            <div className="bg-slate-950 w-[15%] h-dvh flex flex-col gap-8">
+                <div className="flex flex-row justify-start items-center pl-4 pt-4">
+                    <Image src={longLogo} width="90%" className="bg-inherit " />
                 </div>
-                <div className="flex-1 w-[50%]">
-                    <AccountDetails />
+                <div className="px-3 pl-4">
+                    <div className="flex flex-row justify-between py-2 hover:bg-color-slate-900 items-center">
+                        Vaults
+                        <Button isIconOnly size="sm" variant="light">
+                            <AddIcon fontSize="small" />
+                        </Button>
+                    </div>
+
                 </div>
             </div>
         </div>
