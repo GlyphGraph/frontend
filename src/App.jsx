@@ -36,8 +36,7 @@ const App = () => {
         },
         {
             path: "*",
-            element: <Redirect to="/error" />,
-            errorElement: <ErrorPage />
+            element: <ErrorPage />
         }
     ]);
 };

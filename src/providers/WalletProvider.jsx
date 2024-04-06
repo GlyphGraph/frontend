@@ -21,10 +21,7 @@ export default function WalletProvider({ children }) {
         const _provider = new ethers.BrowserProvider(window.ethereum, "any");
         setProvider(_provider);
         if (_provider) {
-            const res = await _provider.send("eth_requestAccounts", [])
-            console.log(res)
             const signer = await _provider.getSigner();
-            console.log(signer);
             const accounts = await window.ethereum.request({
                 method: 'eth_requestAccounts'
             })

@@ -1,17 +1,17 @@
+import logo2 from "@assets/GlyphyGraphLongLogo.svg";
 import logo from "@assets/logo.png";
 import metamaskIcon from "@assets/metamask.webp";
 import { useAuth } from "@context/auth";
-import { Avatar, Button, Chip, Input } from "@nextui-org/react";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import EastIcon from '@mui/icons-material/East';
+import { Avatar, Button, Checkbox, Chip, Input } from "@nextui-org/react";
 import { useGoogleLogin } from '@react-oauth/google';
 import { getRandomWords } from "@utils/faker";
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./styles.module.scss";
-import EastIcon from '@mui/icons-material/East';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { Link } from "react-router-dom";
-import logo2 from "@assets/GlyphyGraphLongLogo.svg"
 
 const Stages = Object.freeze({
     Accounts: "accounts",
@@ -19,11 +19,15 @@ const Stages = Object.freeze({
 });
 
 export default function Signup() {
+    const navigate = useNavigate()
     const [stage, setStage] = useState(Stages.Accounts);
-    const { auth, connectToWallet, setAuth, getProvider } = useAuth();
+    const { auth, connectToWallet } = useAuth();
     const [, setUser] = useState();
     const [token, setToken] = useState();
     const [details, setDetails] = useState();
+    
+    const [userDetails, setUserDetails] = useState({})
+    const handleChangeUserDetails = (e) => setUserDetails(prev => ({...prev, [e.target.name]: e.target.value}))
     const login = useGoogleLogin({
         onSuccess: async (code) => {
             setUser(code);
@@ -45,6 +49,11 @@ export default function Signup() {
     useEffect(() => {
         if (token) {
             setDetails(jwtDecode(token.id_token));
+            setUserDetails(prev => ({...prev, email: details?.email, name: details?.name}))
+            setStage(Stages.Password)
+            const randomMatrix = getRandomWords()
+            setMatrix(randomMatrix)
+            setUserDetails(prev => ({...prev, password: randomMatrix.map(e => e.join(" ")).join(" ")}))
         }
     }, [token]);
 
@@ -58,12 +67,39 @@ export default function Signup() {
     const handleRegister = async () => {
         if (stage === Stages.Accounts) {
             setStage(Stages.Password)
-            setMatrix(getRandomWords())
+            const randomMatrix = getRandomWords()
+            setMatrix(randomMatrix)
+            setUserDetails(prev => ({...prev, password: randomMatrix.map(e => e.join(" ")).join(" ")}))
             return
         }
         if (stage === Stages.Password) {
-            return
+            if(!checked) {
+                alert("Please agree to the terms and conditions")
+                return
+            }
+            console.log(userDetails?.email, userDetails?.name, userDetails?.password)
+            await auth.contract.addUser(userDetails?.email, userDetails?.name, userDetails?.password).then(res => {
+                console.log(res)
+                navigate("/app")
+            }).catch(err => {
+                console.log(err)
+                alert("User already exists!")
+            })
         }
+    };
+
+    const [checked, setChecked] = useState(false)
+
+    const [, setIsCopied] = useState(false)
+    const handleCopy = () => {
+        navigator.clipboard.writeText(matrix?.map(e => e.join(" ")).join(" "))
+            .then(() => {
+                setIsCopied(true);
+                setTimeout(() => setIsCopied(false), 2000); // Reset isCopied after 2 seconds
+            })
+            .catch((err) => {
+                console.error('Failed to copy text: ', err);
+            });
     };
 
     return (
@@ -95,7 +131,7 @@ export default function Signup() {
                             <img
                                 className="mx-auto  w-20 h-20"
                                 src={logo}
-                                alt="Your Company"
+                                alt="GlyphGraph"
                             />
                             <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-white">
                                 <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-white">
@@ -116,17 +152,20 @@ export default function Signup() {
                                         placeholder="Enter your email"
                                         required
                                         autoComplete="email"
-                                        className=""
+                                        onChange={handleChangeUserDetails}
+                                        value={userDetails?.email}
                                     />
                                     <Input
-                                        id="password"
-                                        name="password"
-                                        size="sm"
-                                        type="password"
-                                        label="Password"
-                                        placeholder="Enter your password"
+                                        id="name"
+                                        name="name"
+                                        size="md"
+                                        type="name"
+                                        label="Name"
+                                        placeholder="Enter your Name"
                                         required
-                                        autoComplete="current-password"
+                                        autoComplete="name"
+                                        onChange={handleChangeUserDetails}
+                                        value={userDetails?.name}
                                     />
 
                                     <div>
@@ -168,6 +207,13 @@ export default function Signup() {
                                         </div>
                                     ))}
                                 </div>
+                                <div>
+                                    <Checkbox isSelected={checked} size="md" className="text-sans" onChange={setChecked}>
+                                        <p className="text-sans">
+                                            I agree to Terms and Conditions and have secured the master key.
+                                        </p>
+                                    </Checkbox>
+                                </div>
                                 <div className="flex flex-row gap-2 pt-4">
                                     <Button
                                         className="w-[95%]"
@@ -175,12 +221,14 @@ export default function Signup() {
                                         endIcon={
                                             <ContentCopyIcon fontSize="small" />
                                         }
+                                        onClick={handleCopy}
                                     >
                                         Copy to Clipboard
                                     </Button>
                                     <Button
                                         className="w-[5%]"
                                         isIconOnly
+                                        onClick={handleRegister}
                                     >
                                         <EastIcon fontSize="small" color="white" />
                                     </Button>
