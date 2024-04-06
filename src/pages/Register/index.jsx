@@ -60,9 +60,9 @@ export default function Signup() {
 
 
     return (
-        <div className=''>
-            <div className='h-screen flex items-center justify-center'>
-                <div className='border-2 rounded-2xl'>
+        <div className="">
+            <div className="h-screen flex items-center justify-center">
+                <div className="border-2 rounded-2xl ">
                     <div className="flex  min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                             <img
@@ -99,36 +99,60 @@ export default function Signup() {
                                 </div>
                                 <form className="space-y-6" action="#" method="POST">
                                     <div>
-                                        <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">
+                                        {/* <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">
                                             Email address
-                                        </label>
+                                        </label> */}
+
                                         <div className="mt-2">
-                                            <input
+                                            {/* <input
                                                 id="email"
                                                 name="email"
                                                 type="email"
                                                 autoComplete="email"
                                                 required
                                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            />
+                                            /> */}
+                                        <Input
+                                            id="email"
+                                            name="email"
+                                            size="sm"
+                                            type="email"
+                                            label="Email"
+                                            placeholder="Enter your email"
+                                            required
+                                            autoComplete="email"
+                                        />
                                         </div>
                                     </div>
 
                                     <div>
-                                        <div className="flex items-center justify-between">
-                                            <label htmlFor="password" className="block text-sm font-medium leading-6 text-white">
+                                        {/* <div className="flex items-center justify-between">
+                                            <label
+                                            htmlFor="password"
+                                            className="block text-sm font-medium leading-6 text-white"
+                                        >
                                                 Password
                                             </label>
-                                        </div>
+                                        </div> */}
                                         <div className="mt-2">
-                                            <input
+                                            {/* <input
                                                 id="password"
                                                 name="password"
                                                 type="password"
                                                 autoComplete="current-password"
                                                 required
                                                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                            />
+                                            /> */}
+                                        <Input
+                                            id="password"
+                                            name="password"
+                                            size="sm"
+                                            type="password"
+                                            label="Password"
+                                            placeholder="Enter your password"
+                                            required
+                                            autoComplete="current-password"
+                                        />
                                         </div>
                                     </div>
 
@@ -143,8 +167,7 @@ export default function Signup() {
                                     </div>
                                 </form>
 
-
-                                <div className=' flex items-center justify-center'>
+                                <div className=" flex items-center justify-center">
                                     <button
                                         className={`flex mt-3 justify-center ${styles["login-with-google-btn"]}`}
                                         onClick={() => login()}
@@ -153,8 +176,11 @@ export default function Signup() {
                                     </button>
                                 </div>
                                 <p className="mt-10 text-center text-sm text-gray-500">
-                                    Already a member?{' '}
-                                    <a href="/login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                                    Already a member?{" "}
+                                    <a
+                                    href="/login"
+                                    className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                                >
                                         Sign in
                                     </a>
                                 </p>
@@ -203,5 +229,5 @@ export default function Signup() {
                 </div>
             </div>
         </div>
-    )
+    );
 }
