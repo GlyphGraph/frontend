@@ -1,3 +1,5 @@
+import Login from "@pages/Login";
+import Signup from "@pages/Register";
 import BannerPage from "@pages/bannerpage";
 import ErrorPage from "@pages/error";
 import MainPage from "@pages/main";
@@ -12,14 +14,24 @@ const App = () => {
             errorElement: <ErrorPage />,
         },
         {
-            path: "app",
+            path: "/app",
             element: <MainPage />,
             errorElement: <ErrorPage />,
 
         },
         {
-            path: "error",
+            path: "/error",
             element: <ErrorPage />,
+            errorElement: <ErrorPage />,
+        },
+        {
+            path: "/login",
+            element: <Login />,
+            errorElement: <ErrorPage />,
+        },
+        {
+            path: "/register",
+            element: <Signup />,
             errorElement: <ErrorPage />,
         },
         {
