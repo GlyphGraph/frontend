@@ -1,8 +1,8 @@
-import Sidebar from "@components/sidebar";
+import AccountDetails from "@components/Account_details";
 import HeaderMain from "@components/headerMain";
-import TextArea from "@components/textarea";
 import VaultsBlock from "@components/vaults_block";
-import AccountDertails from "@components/Account_details";
+
+
 const MainPage = () => {
     return (
         <div>
@@ -11,8 +11,8 @@ const MainPage = () => {
                 <div className=" w-[50%] border-r border-white">
                     <VaultsBlock />
                 </div>
-                <div className=" flex-1 w-[50%]">
-                    <AccountDertails />
+                <div className="flex-1 w-[50%]">
+                    <AccountDetails />
                 </div>
             </div>
         </div>

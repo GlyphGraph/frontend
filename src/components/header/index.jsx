@@ -1,4 +1,4 @@
-import logo from "./../../assets/logo.png"
+import logo from "./../../assets/GlyphyGraphLongLogo.png";
 const Header = () => {
     return (
         <div className="flex flex-row h-[10%]  items-center justify-between text-[#64748b]  text-[18px] ">
