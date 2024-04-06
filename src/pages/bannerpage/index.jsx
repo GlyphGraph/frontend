@@ -1,5 +1,3 @@
-import React from "react";
-import logo from "./../../assets/logo.png";
 import Header from "@components/header";
 import Hero from "@components/hero";
 import { Footer } from "@components/Footer";
