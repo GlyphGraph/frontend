@@ -30,6 +30,7 @@
     "ethers": "^6.11.1",
     "framer-motion": "^11.0.24",
     "jwt-decode": "^4.0.0",
+    "mui-file-input": "^4.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",

@@ -1,6 +1,8 @@
 import Login from "@pages/Login";
 import Signup from "@pages/Register";
 import BannerPage from "@pages/bannerpage";
+import CreateLogin from "@pages/create-login";
+import CreatePassword from "@pages/create-password";
 import ErrorPage from "@pages/error";
 import MainPage from "@pages/main";
 import { Redirect } from "react-dom";
@@ -32,6 +34,16 @@ const App = () => {
         {
             path: "/register",
             element: <Signup />,
+            errorElement: <ErrorPage />,
+        },
+        {
+            path: "/create-login",
+            element: <CreateLogin />,
+            errorElement: <ErrorPage />,
+        },
+        {
+            path: "/create-password",
+            element: <CreatePassword />,
             errorElement: <ErrorPage />,
         },
         {
