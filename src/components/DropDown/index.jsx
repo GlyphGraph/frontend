@@ -22,7 +22,7 @@ export default function DropdownCustome() {
     ];
 
     return (
-        <div className=" w-[5%] h-dvh flex flex-col gap-8 pt-4 rounded-full pr-2 ">
+        <div className="  h-dvh flex flex-col gap-8  rounded-full pr-2 ">
             <Dropdown className="bg-slate-950 shadow stroke-gray-100 border border-gray-800 ">
                 <DropdownTrigger>
                     <Button variant="bordered" className="bg-gray-900">
