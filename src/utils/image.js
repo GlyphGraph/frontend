@@ -1,8 +1,8 @@
-const cv = require('@opencv4js/opencv'); // Assuming you have OpenCV.js installed
+import { imreadAsync, Mat, CV_8UC3, Rect } from '@opencv4js/opencv'; // Assuming you have OpenCV.js installed
 
 async function cutImage(imagePath, n, m) {
   // Read the image
-  const image = await cv.imreadAsync(imagePath);
+  const image = await imreadAsync(imagePath);
 
   // Check if image read successfully
   if (image.empty) {
@@ -25,13 +25,13 @@ async function cutImage(imagePath, n, m) {
   const subImageWidth = imageWidth / m;
 
   // Create an empty n x m matrix to store sub-images
-  const subImages = new cv.Mat.zeros(n, m, cv.CV_8UC3);
+  const subImages = new Mat.zeros(n, m, CV_8UC3);
 
   // Loop through each cell of the n x m matrix
   for (let y = 0; y < n; y++) {
     for (let x = 0; x < m; x++) {
       // Define the ROI (Region of Interest) for the sub-image
-      const roi = new cv.Rect(x * subImageWidth, y * subImageHeight, subImageWidth, subImageHeight);
+      const roi = new Rect(x * subImageWidth, y * subImageHeight, subImageWidth, subImageHeight);
 
       // Extract the sub-image from the original image
       const subImage = image.roi(roi);
